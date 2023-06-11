@@ -1,13 +1,9 @@
 import wiki from "wikipedia";
 import fs from 'fs';
 
-const STARTING_YEAR = 1990;
-const ENDING_YEAR = 2020;
 const VALID_QUOTES_COUNT = 2;
 
-const selectedYear = Math.floor(
-  Math.random() * (ENDING_YEAR - STARTING_YEAR + 1)
-) + STARTING_YEAR;
+const selectedYear = 2000;
 
 const page = await wiki.page(
   "List_of_number-one_singles_of_" + selectedYear + "_(Ireland)"
