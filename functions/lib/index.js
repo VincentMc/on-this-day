@@ -1,20 +1,29 @@
 "use strict";
-/**
- * Import function triggers from their respective submodules:
- *
- * import {onCall} from "firebase-functions/v2/https";
- * import {onDocumentWritten} from "firebase-functions/v2/firestore";
- *
- * See a full list of supported triggers at https://firebase.google.com/docs/functions
- */
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.helloWorld = void 0;
+exports.checkSongs = exports.helloWorld = void 0;
 const https_1 = require("firebase-functions/v2/https");
 const logger = require("firebase-functions/logger");
+const admin = require("firebase-admin");
 // Start writing functions
 // https://firebase.google.com/docs/functions/typescript
+// Initialize firebase
+admin.initializeApp();
+const irishNumberOnes = admin.firestore().collection('ireland-number-ones');
 exports.helloWorld = (0, https_1.onRequest)((request, response) => {
-    logger.info("Hello logs!", { structuredData: true });
-    response.send("Hello from Firebase!");
+    logger.info('Hello logs!', { structuredData: true });
+    response.send('Hello from Firebase!');
 });
+exports.checkSongs = (0, https_1.onRequest)(async (request, response) => {
+    const numberOneSnapShot = await irishNumberOnes
+        .where('artists', '==', 'vince').get();
+    let songData;
+    numberOneSnapShot.forEach((element) => {
+        songData = element.data();
+    });
+    response.send(songData);
+});
+// export const populate = onRequest(async (request, response) => {
+//   console.log(noughties);
+//   response.send(noughties);
+// });
 //# sourceMappingURL=index.js.map

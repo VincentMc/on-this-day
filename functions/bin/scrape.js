@@ -60,6 +60,7 @@ function adaptSingleData(single) {
     artists: artist ? artist.replace(/ *\([^)]*\) */g, "") : artists.replace(/ *\([^)]*\) */g, ""),
     startDate: issueDate + ' ' + selectedYear,
     endDate: single.issueDate + ' ' + selectedYear,
+    posted: false,
   };
 
   previousNumberOne = single;
