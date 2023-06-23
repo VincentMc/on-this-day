@@ -28,6 +28,12 @@ export const checkSongs = onRequest(async (request, response) => {
   response.send(songData);
 });
 
+export const checkYoutube = onRequest(async (request, response) => {
+  console.log('');
+
+  response.send('Hello Dude!');
+});
+
 // export const populate = onRequest(async (request, response) => {
 
 //   console.log(noughties);

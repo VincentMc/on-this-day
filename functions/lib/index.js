@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.checkSongs = exports.helloWorld = void 0;
+exports.checkYoutube = exports.checkSongs = exports.helloWorld = void 0;
 const https_1 = require("firebase-functions/v2/https");
 const logger = require("firebase-functions/logger");
 const admin = require("firebase-admin");
@@ -21,6 +21,10 @@ exports.checkSongs = (0, https_1.onRequest)(async (request, response) => {
         songData = element.data();
     });
     response.send(songData);
+});
+exports.checkYoutube = (0, https_1.onRequest)(async (request, response) => {
+    console.log('');
+    response.send('Hello Dude!');
 });
 // export const populate = onRequest(async (request, response) => {
 //   console.log(noughties);
