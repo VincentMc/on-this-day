@@ -1,4 +1,6 @@
+# Compiled JavaScript files
+lib
+
 node_modules
 bin
 data
-lib
