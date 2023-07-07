@@ -3,9 +3,7 @@
 
 name: CI BUILD
 
-on:
-  pull_request:
-    types: [opened, reopened, edited, ready_for_review]
+on: push
 
 jobs:
   build:
