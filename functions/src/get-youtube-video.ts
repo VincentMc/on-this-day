@@ -3,7 +3,7 @@ export const getYoutubeVideoURL = async (artist: string, songTitle: string) => {
   const apiKey = process.env.YOUTUBE_API_KEY;
 
   const response = await fetch(
-    `https://youtube.googleapis.com/youtube/v3/search?maxResults=1&order=relevance&q=${artist} - ${songTitle}&key=${apiKey}`
+    `https://youtube.googleapis.com/youtube/v3/search?maxResults=1&order=relevance&relevanceLanguage=en&q=${artist} - ${songTitle}&key=${apiKey}`
   );
 
   if (response.ok) {

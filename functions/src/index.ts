@@ -100,12 +100,17 @@ export const tweet = onRequest(async (request, response) => {
 
   await authTokesnDbRef.set({ accessToken, refreshToken: newRefreshToken });
 
-  const tweet = await composeTweet('Eminem', 'Stan', 2001);
+  const tweet = await composeTweet(
+    'Flo Rida',
+    'Whistle',
+    2012
+  );
 
   if (tweet) {
     const { data } = await refreshedClient.v2.tweet(tweet);
 
     response.status(200).send(data);
+    return;
   }
 
   response.status(200).send('No valid tweet to send');

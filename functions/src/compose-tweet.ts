@@ -5,12 +5,13 @@ export const composeTweet = async (
   songTitle: string,
   year: number
 ) => {
-  const HASHTAGS = '#onThisDay #numberOne #ireland #irish #singlesChart';
+  // eslint-disable-next-line max-len
+  const HASHTAGS = '#OnThisDay #SinglesChart #NumberOne #No1 #2FM #TodayFM #Ireland #Irish #IrishLife';
   const youTubeVideoURL = await getYoutubeVideoURL(artist, songTitle);
 
   if (youTubeVideoURL) {
     // eslint-disable-next-line max-len
-    const tweet = `On this day ${year} ${artist} - ${songTitle} was No.1 in the charts.
+    const tweet = `On this day ${year} || ${artist} - ${songTitle} || topped the charts. ☘️
       \n\n${youTubeVideoURL}\n\n${HASHTAGS}`;
 
     return tweet;
