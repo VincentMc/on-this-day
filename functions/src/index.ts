@@ -1,7 +1,6 @@
 import * as dotenv from 'dotenv';
 import { onRequest } from 'firebase-functions/v2/https';
 import * as admin from 'firebase-admin';
-import { DocumentData } from 'firebase-admin/firestore';
 import { TwitterApi } from 'twitter-api-v2';
 import { composeTweet } from './compose-tweet';
 
@@ -70,26 +69,7 @@ export const callback = onRequest(async (request, response) => {
   response.sendStatus(200);
 });
 
-export const getSong = onRequest(async (request, response) => {
-  const numberOneSnapShot = await irishNumberOnes
-    .where('artists', '==', 'vince').get();
-
-  let songData: DocumentData;
-
-  numberOneSnapShot.forEach((element) => {
-    songData = element.data();
-  });
-
-  response.send(songData);
-});
-
 export const tweet = onRequest(async (request, response) => {
-  // Query firebase for list of songs that that were number one on todays date
-  // That have not been posted before
-  // Select one at random
-  // Tweet it
-  // Update that record to be posted so it will be excluded from future queries
-
   const { refreshToken } = (await authTokesnDbRef.get()).data();
 
   const {
@@ -114,4 +94,65 @@ export const tweet = onRequest(async (request, response) => {
   }
 
   response.status(200).send('No valid tweet to send');
+});
+
+export const getSong = onRequest(async (request, response) => {
+  try {
+    const today = new Date();
+    const todayMonth = today.getMonth() + 1;
+    const todayDay = today.getDate();
+
+
+    const numberOneSnapshot = await irishNumberOnes
+      .where('posted', '==', false)
+      .get();
+
+    if (numberOneSnapshot.empty) {
+      response.status(404).send('No songs found for today');
+      return;
+    }
+
+
+    const matchingSongs = numberOneSnapshot.docs
+      .map((doc) => {
+        const data = doc.data() as {
+          startDate: FirebaseFirestore.Timestamp;
+          endDate: FirebaseFirestore.Timestamp;
+        };
+        return { id: doc.id, ...data };
+      })
+      .filter((song) => {
+        const startDate = song.startDate.toDate();
+        const endDate = song.endDate.toDate();
+
+        const startMonth = startDate.getMonth() + 1;
+        const startDay = startDate.getDate();
+
+        const endMonth = endDate.getMonth() + 1;
+        const endDay = endDate.getDate();
+
+        const isAfterStart =
+          todayMonth > startMonth ||
+            (todayMonth === startMonth && todayDay >= startDay);
+        const isBeforeEnd =
+          todayMonth < endMonth ||
+            (todayMonth === endMonth && todayDay <= endDay);
+
+        return isAfterStart && isBeforeEnd;
+      });
+
+    if (matchingSongs.length === 0) {
+      response.status(404).send('No songs found for today');
+      return;
+    }
+
+    // Pick one song at random from the matching songs
+    const randomIndex = Math.floor(Math.random() * matchingSongs.length);
+    const selectedSong = matchingSongs[randomIndex];
+
+    response.status(200).send(selectedSong);
+  } catch (error) {
+    console.error('Error retrieving songs:', error);
+    response.status(500).send('Internal Server Error');
+  }
 });
