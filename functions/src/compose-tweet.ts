@@ -6,8 +6,8 @@ export const composeTweet = async (
   year: number
 ) => {
   const HASHTAGS =
-    '#OnThisDay #SinglesChart #NumberOne #No1 ' +
-    '#2FM #TodayFM #Ireland #Irish';
+    '#onthisday #singleschart #numberone #no1 ' +
+    '#2fm #todayfm #ireland #irish #eire';
   const youTubeVideoURL = await getYoutubeVideoURL(artists, songTitle);
 
   if (youTubeVideoURL) {
