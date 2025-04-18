@@ -80,14 +80,27 @@ export const tweet = onRequest(async (request, response) => {
 
   await authTokesnDbRef.set({ accessToken, refreshToken: newRefreshToken });
 
+  const song = await getSongForToday();
+
+  if (!song) {
+    response.status(200).send('No song found for today');
+    return;
+  }
+  const { year, id, artists, title } = song;
+
   const tweet = await composeTweet(
-    'Flo Rida',
-    'Whistle',
-    2012
+    artists,
+    title,
+    year
   );
+
+  console.log('tweet', tweet);
+  console.log('song', song);
 
   if (tweet) {
     const { data } = await refreshedClient.v2.tweet(tweet);
+
+    await irishNumberOnes.doc(id).update({ posted: true });
 
     response.status(200).send(data);
     return;
@@ -96,61 +109,76 @@ export const tweet = onRequest(async (request, response) => {
   response.status(200).send('No valid tweet to send');
 });
 
+const getSongForToday = async () => {
+  const today = new Date();
+  const todayMonth = today.getMonth() + 1;
+  const todayDay = today.getDate();
+
+  const numberOneSnapshot = await irishNumberOnes
+    .where('posted', '==', false)
+    .get();
+
+  if (numberOneSnapshot.empty) return null;
+
+  const matchingSongs = numberOneSnapshot.docs
+    .map((doc) => {
+      const data = doc.data() as {
+        startDate: FirebaseFirestore.Timestamp;
+        endDate: FirebaseFirestore.Timestamp;
+        artists: string;
+        title: string;
+      };
+      return { id: doc.id, ...data };
+    })
+    .filter((song) => {
+      const startDate = song.startDate.toDate();
+      const endDate = song.endDate.toDate();
+
+      const startMonth = startDate.getMonth() + 1;
+      const startDay = startDate.getDate();
+
+      const endMonth = endDate.getMonth() + 1;
+      const endDay = endDate.getDate();
+
+      const isAfterStart =
+        todayMonth > startMonth ||
+        (todayMonth === startMonth && todayDay >= startDay);
+      const isBeforeEnd =
+        todayMonth < endMonth ||
+        (todayMonth === endMonth && todayDay <= endDay);
+
+      return isAfterStart && isBeforeEnd;
+    });
+
+  if (matchingSongs.length === 0) {
+    return null;
+  }
+
+  // Pick one song at random from the matching songs
+  const randomIndex = Math.floor(Math.random() * matchingSongs.length);
+  const selectedSong = matchingSongs[randomIndex];
+
+  // Derive the year from the startDate of the selected song
+  const year = selectedSong.startDate.toDate().getFullYear();
+
+  return {
+    id: selectedSong.id,
+    year, // Include the derived year
+    artists: selectedSong.artists,
+    title: selectedSong.title,
+  };
+};
+
 export const getSong = onRequest(async (request, response) => {
   try {
-    const today = new Date();
-    const todayMonth = today.getMonth() + 1;
-    const todayDay = today.getDate();
+    const song = await getSongForToday();
 
-
-    const numberOneSnapshot = await irishNumberOnes
-      .where('posted', '==', false)
-      .get();
-
-    if (numberOneSnapshot.empty) {
+    if (!song) {
       response.status(404).send('No songs found for today');
       return;
     }
 
-
-    const matchingSongs = numberOneSnapshot.docs
-      .map((doc) => {
-        const data = doc.data() as {
-          startDate: FirebaseFirestore.Timestamp;
-          endDate: FirebaseFirestore.Timestamp;
-        };
-        return { id: doc.id, ...data };
-      })
-      .filter((song) => {
-        const startDate = song.startDate.toDate();
-        const endDate = song.endDate.toDate();
-
-        const startMonth = startDate.getMonth() + 1;
-        const startDay = startDate.getDate();
-
-        const endMonth = endDate.getMonth() + 1;
-        const endDay = endDate.getDate();
-
-        const isAfterStart =
-          todayMonth > startMonth ||
-            (todayMonth === startMonth && todayDay >= startDay);
-        const isBeforeEnd =
-          todayMonth < endMonth ||
-            (todayMonth === endMonth && todayDay <= endDay);
-
-        return isAfterStart && isBeforeEnd;
-      });
-
-    if (matchingSongs.length === 0) {
-      response.status(404).send('No songs found for today');
-      return;
-    }
-
-    // Pick one song at random from the matching songs
-    const randomIndex = Math.floor(Math.random() * matchingSongs.length);
-    const selectedSong = matchingSongs[randomIndex];
-
-    response.status(200).send(selectedSong);
+    response.status(200).send(song);
   } catch (error) {
     console.error('Error retrieving songs:', error);
     response.status(500).send('Internal Server Error');
