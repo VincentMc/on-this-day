@@ -1,8 +1,8 @@
-import { getYoutubeVideoURL } from './get-youtube-video-url';
+import { getYoutubeVideoURL } from './youtube-service';
 
 const HASHTAGS =
-'#onthisday #singleschart #numberone #no1 ' +
-'#2fm #todayfm #ireland #eire';
+  '#onthisday #singleschart #numberone #no1 ' +
+  '#2fm #todayfm #ireland #eire';
 
 export const composeTweet = async (
   artists: string,
@@ -15,11 +15,8 @@ export const composeTweet = async (
     const tweetVariations = [
       `On this day in ${year}, ${artists} hit number one with "${songTitle}". Relive the moment! ☘️\n\n${youTubeVideoURL}\n\n${HASHTAGS}`,
       `Throwback to ${year}! "${songTitle}" by ${artists} was topping the charts. 🎶\n\n${youTubeVideoURL}\n\n${HASHTAGS}`,
-      `Feeling nostalgic? In ${year}, ${artists} ruled the charts with "${songTitle}". 🎤\n\n${youTubeVideoURL}\n\n${HASHTAGS}`,
-      `Chart-topper alert! "${songTitle}" by ${artists} was number one on this day in ${year}. 🏆\n\n${youTubeVideoURL}\n\n${HASHTAGS}`,
     ];
 
-    // Randomly select one of the tweet variations
     const randomIndex = Math.floor(Math.random() * tweetVariations.length);
     return tweetVariations[randomIndex];
   }

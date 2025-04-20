@@ -1,8 +1,8 @@
-import { composeTweet } from '../src/compose-tweet';
-import { getYoutubeVideoURL } from '../src/get-youtube-video-url';
+import { composeTweet } from '../../src/services/tweet-service';
+import { getYoutubeVideoURL } from '../../src/services/youtube-service';
 import { vi } from 'vitest';
 
-vi.mock('../src/get-youtube-video-url', () => ({
+vi.mock('../../src/services/youtube-service', () => ({
   getYoutubeVideoURL: vi.fn().mockResolvedValue('https://youtube.com/watch?v=test'),
 }));
 

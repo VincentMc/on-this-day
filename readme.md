@@ -28,6 +28,8 @@ Firestore is used as the database to store and retrieve historical chart data. E
 
 Cloud Scheduler is used to automate the daily execution of the bot. It triggers the Firebase function responsible for tweeting the number one song for the day. This ensures the bot runs consistently without manual intervention.
 
+Configured seperately read more here: https://cloud.google.com/scheduler/docs
+
 ### **YouTube API**
 
 The YouTube API is used to fetch video links for the songs, which are included in the tweets. This enhances the tweet content by providing a direct link to the song's video.
@@ -53,7 +55,7 @@ The Twitter API is used to authenticate the bot and post tweets. It handles OAut
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/your-username/on-this-day.git
+git clone https://github.com/VincentMc/on-this-day.git
 cd on-this-day/functions
 ```
 

@@ -1,4 +1,4 @@
-import { getYoutubeVideoURL } from '../src/get-youtube-video-url';
+import { getYoutubeVideoURL } from '../../src/services/youtube-service';
 import { vi } from 'vitest';
 
 describe('getYoutubeVideoURL', () => {
@@ -35,7 +35,7 @@ describe('getYoutubeVideoURL', () => {
     const result = await getYoutubeVideoURL('Artist Name', 'Song Title');
     expect(result).toBe(`${YOUTUBE_WATCH_URL}testVideoId`);
     expect(mockFetch).toHaveBeenCalledWith(
-      `https://youtube.googleapis.com/youtube/v3/search?maxResults=1&order=relevance&relevanceLanguage=en&q=Artist Name - Song Title&key=${YOUTUBE_API_KEY}`
+      `https://youtube.googleapis.com/youtube/v3/search?maxResults=1&order=relevance&relevanceLanguage=en&q=Artist Name Song Title&key=${YOUTUBE_API_KEY}`
     );
   });
 
@@ -54,6 +54,6 @@ describe('getYoutubeVideoURL', () => {
       'YouTube API request failed with status: 500'
     );
 
-    consoleErrorSpy.mockRestore(); // Restore the original implementation
+    consoleErrorSpy.mockRestore();
   });
 });
