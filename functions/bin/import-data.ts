@@ -1,6 +1,6 @@
 import * as admin from 'firebase-admin';
 import * as data from '../data/all-years.json';
-import { Song } from '../src/models/song';
+import { Song } from './song';
 
 admin.initializeApp();
 

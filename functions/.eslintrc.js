@@ -19,8 +19,8 @@ module.exports = {
     tsconfigRootDir: __dirname,
   },
   ignorePatterns: [
-    '/lib/**/*', // Ignore built files.
-    '/bin/*.js', // Ignore scraping and script files
+    '/lib/**/*',
+    '/bin/*.js',
   ],
   plugins: [
     '@typescript-eslint',
@@ -36,9 +36,9 @@ module.exports = {
   },
   overrides: [
     {
-      files: ['**/*.test.ts', '**/tests/**/*.ts'], // Match test files
+      files: ['**/*.test.ts', '**/tests/**/*.ts'],
       rules: {
-        '@typescript-eslint/no-explicit-any': 'off', // Allow 'any' type in tests
+        '@typescript-eslint/no-explicit-any': 'off',
       },
     },
   ],

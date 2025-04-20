@@ -13,13 +13,11 @@ const {
   CALLBACK_URL,
 } = process.env;
 
-// Initialise twitter client
 const twitterClient = new TwitterApi({
   clientId: TWITTER_CLIENT_ID,
   clientSecret: TWITTER_CLIENT_SECRET,
 });
 
-// Initialize firebase
 admin.initializeApp();
 
 const authTokesnDbRef = admin.firestore().doc('tokens/twitter-auth');
@@ -59,7 +57,6 @@ export const callback = onRequest(async (request, response) => {
     code: `${code}`, codeVerifier, redirectUri: CALLBACK_URL,
   });
 
-  // access and refresh tokens
   await authTokesnDbRef.set({ accessToken, refreshToken });
 
   response.sendStatus(200);
