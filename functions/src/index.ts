@@ -31,10 +31,6 @@ export const auth = onRequest(async (request, response) => {
     { scope: ['tweet.read', 'tweet.write', 'users.read', 'offline.access'] }
   );
 
-  console.log(url);
-  console.log(codeVerifier);
-  console.log(state);
-
   await authTokesnDbRef.set({ codeVerifier, state });
 
   response.redirect(url);
@@ -93,9 +89,6 @@ export const tweet = onRequest(async (request, response) => {
     title,
     year
   );
-
-  console.log('tweet', tweet);
-  console.log('song', song);
 
   if (tweet) {
     const { data } = await refreshedClient.v2.tweet(tweet);

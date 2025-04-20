@@ -32,5 +32,14 @@ module.exports = {
     'indent': ['error', 2],
     'linebreak-style': 0,
     'object-curly-spacing': ['error', 'always'],
+    'max-len': 'off',
   },
+  overrides: [
+    {
+      files: ['**/*.test.ts', '**/tests/**/*.ts'], // Match test files
+      rules: {
+        '@typescript-eslint/no-explicit-any': 'off', // Allow 'any' type in tests
+      },
+    },
+  ],
 };

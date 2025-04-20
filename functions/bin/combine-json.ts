@@ -6,7 +6,7 @@ const outputFilePath = path.join(__dirname, '../data/all-years.json');
 
 const combineJsonFiles = () => {
   const allFiles = fs.readdirSync(directoryPath);
-  const combinedData: any[] = [];
+  const combinedData: Record<string, unknown>[] = [];
 
   allFiles.forEach((file) => {
     if (file.endsWith('.json')) {

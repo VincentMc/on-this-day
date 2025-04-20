@@ -22,7 +22,13 @@ export class Song {
     this.posted = posted;
   }
 
-  static fromJson(json: any): Song {
+  static fromJson(json: {
+    title: string;
+    artists: string;
+    startDate: string;
+    endDate: string;
+    posted: boolean
+  }): Song {
     return new Song(
       json.title,
       json.artists,

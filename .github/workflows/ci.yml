@@ -21,9 +21,10 @@ jobs:
       - name: Navigate to functions
         run: cd functions
 
-      - name: Install, build and lint
+      - name: Install, build and test
         working-directory: ./functions
         run: |
           yarn install --frozen-lockfile
           yarn build
           yarn lint
+          yarn test

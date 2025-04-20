@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "types": ["vitest/globals"],
     "skipLibCheck": true,
     "module": "commonjs",
     "noImplicitReturns": true,
@@ -13,6 +14,8 @@
   "compileOnSave": true,
   "include": [
     "src", 
-    "bin"  
+    "bin",
+    "vitest.config.ts",
+    "tests"
   ],
 }
