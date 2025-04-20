@@ -4,15 +4,14 @@
     "lint": "eslint --ext .js,.ts .",
     "build": "tsc",
     "build:watch": "tsc --watch",
-    "serve": "yarn build && firebase emulators:start --only functions",
-    "serve:watch": "yarn build:watch | firebase emulators:start --only functions",
+    "serve": "firebase emulators:start --only functions",
     "shell": "yarn build && firebase functions:shell",
     "start": "yarn shell",
     "deploy": "firebase deploy --only functions",
     "scrape": "node ./bin/scrape.js"
   },
   "engines": {
-    "node": "18"
+    "node": "20"
   },
   "main": "lib/src/index.js",
   "dependencies": {
