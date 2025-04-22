@@ -132,15 +132,3 @@ The coverage report will be available in the `coverage/` directory.
 ### Writing Tests
 
 Test files are located in the `tests` directory and follow the naming convention `*.test.ts`. Ensure new features are covered by appropriate unit tests.
-
----
-
-## Contributing
-
-Contributions are welcome! Feel free to submit issues or pull requests to improve the bot.
-
----
-
-## License
-
-This project is licensed under the MIT License.
